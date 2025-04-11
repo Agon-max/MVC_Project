@@ -294,6 +294,109 @@ namespace RestaurantWebApplication.Data.Migrations
                     b.ToTable("Foods");
                 });
 
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FoodOrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ForderOrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("phoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodOrderStatusId");
+
+                    b.ToTable("FoodOrders");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FoodOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodId");
+
+                    b.HasIndex("FoodOrderId");
+
+                    b.ToTable("FoodOrderDetails");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FoodOrderStatuses");
+                });
+
             modelBuilder.Entity("RestaurantWebApplication.Models.FoodType", b =>
                 {
                     b.Property<int>("Id")
@@ -377,6 +480,46 @@ namespace RestaurantWebApplication.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("FoodType");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrder", b =>
+                {
+                    b.HasOne("RestaurantWebApplication.Models.FoodOrderStatus", "FoodOrderStatus")
+                        .WithMany("FoodOrders")
+                        .HasForeignKey("FoodOrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodOrderStatus");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrderDetail", b =>
+                {
+                    b.HasOne("RestaurantWebApplication.Models.Food", "Food")
+                        .WithMany("FoodOrderDetails")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestaurantWebApplication.Models.FoodOrder", "FoodOrder")
+                        .WithMany()
+                        .HasForeignKey("FoodOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Food");
+
+                    b.Navigation("FoodOrder");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.Food", b =>
+                {
+                    b.Navigation("FoodOrderDetails");
+                });
+
+            modelBuilder.Entity("RestaurantWebApplication.Models.FoodOrderStatus", b =>
+                {
+                    b.Navigation("FoodOrders");
                 });
 
             modelBuilder.Entity("RestaurantWebApplication.Models.FoodType", b =>

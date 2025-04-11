@@ -3,7 +3,11 @@
 namespace RestaurantWebApplication.Models
 {
 	public class Food
-	{
+	{ 
+		public Food() 
+		{
+            FoodOrderDetails = new List<FoodOrderDetail>();
+        }	
 		
 		[Key]
 		public int Id { get; set; }
@@ -15,5 +19,8 @@ namespace RestaurantWebApplication.Models
 		public DateTime UpdatedAt { get; set; }
 		public int FoodTypeId { get; set; }
 		public FoodType FoodType { get; set; }
-	}
+
+        public List<FoodOrderDetail> FoodOrderDetails { get; set; }
+
+    }
 }

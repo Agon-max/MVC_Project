@@ -1,8 +1,4 @@
-﻿
-
-
-@* @using Microsoft.CodeAnalysis.Scripting *@
-@model List<Food>
+﻿@model List<Food>
 
 @{
     ViewData["Title"] = "Menyja";
@@ -26,7 +22,7 @@
         {
             <div class="col-sm-4 col-md-3">
                 <div class="card mb-4">
-                    <img src="~/image/food/@food.Image" class="card-img-top img-thumbnail" alt="..." style="width: 280px; height: 280px; object-fit: cover;">
+                    <img src="~/image/food/@food.Image" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">
                             @food.Name
@@ -79,71 +75,56 @@
                         <input type="text" name="last_name" id="last_name" class="form-control" />
                     </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col">
-                        <label for="first_name">Numri telefonik:</label>
+                        <label for="phone_number">Numri telefonit:</label>
                         <input type="text" name="phone_number" id="phone_number" class="form-control" />
                     </div>
 
                     <div class="col">
-                        <label for="last_name">Email Adresa:</label>
+                        <label for="email_address">Email adresa:</label>
                         <input type="text" name="email_address" id="email_address" class="form-control" />
                     </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col">
-                        <label for="last_name">Adresa:</label>
+                        <label for="address">Adresa:</label>
                         <input type="text" name="address" id="address" class="form-control" />
                     </div>
                 </div>
+
                 <div class="row mb-2" id="product_list">
                     <div class="col">
                         <p>Produktet</p>
-
                     </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col">
-                        <label for="first_name">Çmimi në total:</label>
+                        <label for="total_price">Çmimi në total:</label>
                         <input type="text" name="total_price" id="total_price" class="form-control" readonly="readonly" />
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mbylle</button>
-                <button type="button" class="btn btn-primary" onclick="submitOrder(this)">Dërgo Porosinë!</button>
+                <button type="button" class="btn btn-primary" onclick="submitOrder(this);">Dërgo porosinë</button>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts{
-    <script type="text/javascript">
-        jQuery(function(){
-            document.querySelectorAll("button[cart-btn]").forEach(function(button){
-                button.addEventListener('click',function(){
-
-                    let currentCart = document.querySelector("ul.navbar-nav li.dropdown ul.dropdown-menu");
-
-                    let addToCartBtn = this;
-                    let foodId = addToCartBtn.getAttribute("data-food-id");
-                    let foodName = addToCartBtn.getAttribute("data-food-name");
-                    let foodPrice = addToCartBtn.getAttribute("data-food-price");
-                    let foodImage = addToCartBtn.getAttribute("data-food-image");
-                });
-            });
-        });
-    </script>
-}
-
-
-
-
-@* 
-
 @section Scripts {
     <script type="text/javascript">
-          let calculateOrderedProductPricesForModal = function(){
+        let isValidEmail = function (email) {
+            const regex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return regex.test(email);
+        }
+
+        let calculateOrderedProductPricesForModal = function(){
             let currentOrderedProducts = document.querySelectorAll("ul.navbar-nav li.dropdown ul.dropdown-menu li[data-product]");
 
             let totalProductsPrice = 0;
@@ -157,7 +138,6 @@
 
             return totalProductsPrice + " €";
         };
-
 
         let calculateOrderedProductPrices = function(){
             let currentOrderedProducts = document.querySelectorAll("ul.navbar-nav li.dropdown ul.dropdown-menu li[data-product]");
@@ -202,11 +182,11 @@
 
         let orderProductsModal = function(currentBtn){
             let productItems = '';
-            document.querySelectorAll("ul.navbar-nav li.dropdown ul.dropdown-menu li[data-product]").forEach(
-                function(product){
-                    productItems += product.innerHTML.replace(`<td><span class="badge rounded-pill bg-danger" onclick="removeProductFromCard(this);" style="cursor: pointer;"> Largo</span></td>`,``);
-                }
-            );
+
+            document.querySelectorAll("ul.navbar-nav li.dropdown ul.dropdown-menu li[data-product]").forEach(function(product){
+                productItems += product.innerHTML.replace('<td><span class="badge rounded-pill bg-danger" onclick="removeProductFromCard(this);" style="cursor: pointer;"> Largo</span></td>', '');
+            });
+
             document.querySelector("#product_order_modal .modal-body #product_list .col").innerHTML = productItems;
             document.querySelector("#product_order_modal .modal-body input[name='total_price']").value = calculateOrderedProductPricesForModal();
 
@@ -217,17 +197,66 @@
             let currentModal = document.querySelector("#product_order_modal");
 
             let obj = {
-
                 FirstName : currentModal.querySelector("input[name='first_name']").value,
                 LastName : currentModal.querySelector("input[name='last_name']").value,
-                PhoneNumber : currentModal.querySelector("input[name='last_name']").value,
+                PhoneNumber : currentModal.querySelector("input[name='phone_number']").value,
                 EmailAddress : currentModal.querySelector("input[name='email_address']").value,
                 Address : currentModal.querySelector("input[name='address']").value,
-                TotalPrice : parseFloat(currentModal.querySelector("input[name='total_price']").value.replace(` €`,``))
+                TotalPrice : parseFloat(currentModal.querySelector("input[name='total_price']").value.replace(' €', '')),
+                Products : []
+            };
+
+            document.querySelectorAll("ul.navbar-nav li.dropdown ul.dropdown-menu li[data-product]").forEach(function(product){
+                obj.Products.push(parseInt(product.getAttribute("data-id")));
+            });
+
+            if(obj.FirstName.length < 1){
+                alert("Ju lutem të shkruani emrin tuaj.");
+                return false;
             }
 
-            console.log(obj)
-        }
+            if(obj.LastName.length < 1){
+                alert("Ju lutem të shkruani mbiemrin tuaj.");
+                return false;
+            }
+
+            if(obj.PhoneNumber.length < 9 || obj.PhoneNumber.length > 12){
+                alert("Ju lutem të shkruani numrin tuaj të telefonit.");
+                return false;
+            }
+
+            if(obj.EmailAddress.length < 7){
+                alert("Ju lutem të shkruani email adresen tuaj.");
+                return false;
+            }
+
+            if(isValidEmail(obj.EmailAddress) == false){
+                alert("Ju lutem të shkruani email adresen tuaj valide.");
+                return false;
+            }
+
+            if(obj.Address.length < 10){
+                alert("Ju lutem të shkruani adresen tuaj (deri në 10 karaktere minimalisht).");
+                return false;
+            }
+
+            if(obj.Products.length < 1){
+                alert("Ju lutemi zgjedhni produktet!");
+                return false;
+            }
+
+            jQuery.ajax({
+                url: '@Url.Action("OrderSubmission", "Home")',
+                type: 'POST',
+                data: obj,
+                success: function(response) {
+                    console.log('Success:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        };
 
         jQuery(function(){
             document.querySelectorAll("button[cart-btn]").forEach(function(button){
@@ -235,12 +264,12 @@
                     let currentCartSelector = document.querySelector("ul.navbar-nav li.dropdown ul.dropdown-menu");
 
                     let currentSelector = this;
-                    let currentProductId = currentSelector.getAttribute("data-food-id");
+                    let currentProductId = parseInt(currentSelector.getAttribute("data-food-id"));
                     let currentProductName = currentSelector.getAttribute("data-food-name");
                     let currentProductPrice = currentSelector.getAttribute("data-food-price");
                     let currentProductImage = currentSelector.getAttribute("data-food-image");
 
-                    let newProduct = '<li data-product class="d-flex justify-content-start"><table class="table table-borderless m-0" style="width:100%;"><tbody><tr><td><div class="text-center"><img src="/image/food/' + currentProductImage + '" class="rounded" alt="..." width="50" /></div></td><td>' + currentProductName + '</td><td class="text-nowrap"><b>' + currentProductPrice + ' €</b></td><td><span class="badge rounded-pill bg-danger" onclick="removeProductFromCard(this);" style="cursor: pointer;"> Largo</span></td></tr></tbody></table></li>';
+                    let newProduct = '<li data-product data-id="' + currentProductId + '" class="d-flex justify-content-start"><table class="table table-borderless m-0" style="width:100%;"><tbody><tr><td><div class="text-center"><img src="/image/food/' + currentProductImage + '" class="rounded" alt="..." width="50" /></div></td><td>' + currentProductName + '</td><td class="text-nowrap"><b>' + currentProductPrice + ' €</b></td><td><span class="badge rounded-pill bg-danger" onclick="removeProductFromCard(this);" style="cursor: pointer;"> Largo</span></td></tr></tbody></table></li>';
 
                     let orderProductsBtn = '<li data-product-order-btn class="d-flex justify-content-start"><table class="table table-borderless m-0" style="width:100%;"><tbody><tr><td><button class="btn btn-primary w-100" type="button" onclick="orderProductsModal(this);">Bëje porosinë</button></td></tr></tbody></table></li>';
 
@@ -258,4 +287,4 @@
             });
         });
     </script>
-} *@
+}

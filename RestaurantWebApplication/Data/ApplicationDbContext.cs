@@ -17,5 +17,8 @@ namespace RestaurantWebApplication.Data
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<FoodType> FoodTypes { get; set; }
+        public DbSet<FoodOrderStatus> FoodOrderStatuses { get; set; }
+        public DbSet<FoodOrderDetail> FoodOrderDetails { get; set; }
+        public DbSet<FoodOrder> FoodOrders { get; set; }
     }
 }

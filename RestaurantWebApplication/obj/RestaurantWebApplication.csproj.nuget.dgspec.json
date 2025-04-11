@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ramad\\OneDrive\\Desktop\\RestaurantWebApplication\\RestaurantWebApplication.csproj": {}
+    "C:\\Users\\BCS\\Documents\\GitHub\\MVC_Project\\RestaurantWebApplication\\RestaurantWebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ramad\\OneDrive\\Desktop\\RestaurantWebApplication\\RestaurantWebApplication.csproj": {
+    "C:\\Users\\BCS\\Documents\\GitHub\\MVC_Project\\RestaurantWebApplication\\RestaurantWebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ramad\\OneDrive\\Desktop\\RestaurantWebApplication\\RestaurantWebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\BCS\\Documents\\GitHub\\MVC_Project\\RestaurantWebApplication\\RestaurantWebApplication.csproj",
         "projectName": "RestaurantWebApplication",
-        "projectPath": "C:\\Users\\ramad\\OneDrive\\Desktop\\RestaurantWebApplication\\RestaurantWebApplication.csproj",
-        "packagesPath": "C:\\Users\\ramad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ramad\\OneDrive\\Desktop\\RestaurantWebApplication\\obj\\",
+        "projectPath": "C:\\Users\\BCS\\Documents\\GitHub\\MVC_Project\\RestaurantWebApplication\\RestaurantWebApplication.csproj",
+        "packagesPath": "C:\\Users\\BCS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\BCS\\Documents\\GitHub\\MVC_Project\\RestaurantWebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ramad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\BCS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -91,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

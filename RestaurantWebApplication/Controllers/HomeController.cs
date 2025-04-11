@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantWebApplication.Data;
 using RestaurantWebApplication.Models;
+using RestaurantWebApplication.Models.ViewModels;
 
 namespace RestaurantWebApplication.Controllers
 {
@@ -63,6 +64,47 @@ namespace RestaurantWebApplication.Controllers
             }
 
             return View("Contact");
+        }
+
+        [HttpPost]
+        public IActionResult OrderSubmission(OrderSubmissionVM model)
+        {
+            if (model == null)
+                return null;
+
+            if (ModelState.IsValid)
+            {
+                var newFoodOrder = new FoodOrder
+                {
+                    FullName =  model.FirstName + " " + model.LastName,
+                    phoneNumber = model.PhoneNumber,
+                    EmailAddress = model.Email,
+                    Address = model.Address,
+                    TotalPrice = model.TotalPrice,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = null,
+                    DeletedAt = null,
+
+                };
+
+                _dbContext.FoodOrders.Add(newFoodOrder);
+                _dbContext.SaveChanges();   
+
+                var allOrderedProducts = _dbContext.Foods.Where(r => model.Products.Contains(r.Id)).ToList();
+
+                foreach (var orderedProduct in allOrderedProducts)
+                {
+                     FoodOrderId = newFoodOrder.Id,
+                        FoodId = orderedProduct.Id,
+                    Price = orderedProduct.Price
+                    CreatedAt = orderedProduct.CreatedAt,
+                    DeletedAt = null
+                }
+
+                return Json(new { status = true, model = new List<int>(), message = "Porosia u pranua, se shpejti do te pranoni nje telefonate per konfirmim porosie"});
+            }
+
+            return Json(new {status = false, model = new List<int>(), message = "Ju lutem provoni perseri, porosia juaj deshtoj!"});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
