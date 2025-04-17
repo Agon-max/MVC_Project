@@ -1,8 +1,57 @@
-﻿@{
+﻿@model List<FoodOrder>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="text-center">
+            <h5 class="display-4">Menaxhimi i Porosive</h5>
+            <h6>Ketu menaxhohen porosite!</h6>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Klienti</th>
+                    <th>Numri i telefonit</th>
+                    <th>Email Adresa</th>
+                    <th>Produktet e porositura</th>
+                    <th>Porosia</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var order in Model)
+                {
+                    <tr>
+                        <th>
+                            @order.Id
+                        </th>
+                        <th>
+                            @order.FullName
+                        </th>
+                        <th>
+                            @order.phoneNumber
+                        </th>
+                        <th>
+                            @order.EmailAddress
+                        </th>
+                        <th>
+                            @order.
+                        </th>
+                        <th>
+                            @order.TotalPrice.ToString("N2");
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

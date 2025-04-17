@@ -70,7 +70,7 @@ namespace RestaurantWebApplication.Controllers
         public IActionResult OrderSubmission(OrderSubmissionVM model)
         {
             if (model == null)
-                return null;
+                return BadRequest("Model is null");
 
             if (ModelState.IsValid)
             {
@@ -90,15 +90,19 @@ namespace RestaurantWebApplication.Controllers
                 _dbContext.FoodOrders.Add(newFoodOrder);
                 _dbContext.SaveChanges();   
 
-                var allOrderedProducts = _dbContext.Foods.Where(r => model.Products.Contains(r.Id)).ToList();
+                var allOrderedProducts = _dbContext.Foods
+                    .Where(r => model.Products.Contains(r.Id))
+                    .ToList();
 
                 foreach (var orderedProduct in allOrderedProducts)
                 {
-                     FoodOrderId = newFoodOrder.Id,
+                    var foodOrderDetail = new FoodOrderDetail {
+                        FoodOrderId = newFoodOrder.Id,
                         FoodId = orderedProduct.Id,
-                    Price = orderedProduct.Price
-                    CreatedAt = orderedProduct.CreatedAt,
-                    DeletedAt = null
+                        Price = orderedProduct.Price,
+                        CreatedAt = orderedProduct.CreatedAt,
+                        DeletedAt = null
+                    };
                 }
 
                 return Json(new { status = true, model = new List<int>(), message = "Porosia u pranua, se shpejti do te pranoni nje telefonate per konfirmim porosie"});

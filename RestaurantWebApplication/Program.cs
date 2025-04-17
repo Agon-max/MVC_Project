@@ -32,7 +32,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+ // Middleware zbatohen per te gjithe kontrollerat kurse filterat ne kontrollera specifik.
 app.UseAuthorization();
 
 app.MapControllerRoute(
