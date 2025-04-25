@@ -21,7 +21,12 @@ namespace RestaurantWebApplication.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var orders = _dbContext.FoodOrders.Include(r => r.FoodOrderDetails)
+                .ThenInclude(r => r.Food)
+                .Include(r => r.FoodOrderStatus)
+                .Where(r => r.DeletedAt == null)
+                .ToList();
+            return View(orders);
         }
 
         public IActionResult History()

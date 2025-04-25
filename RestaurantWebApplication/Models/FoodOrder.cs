@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestaurantWebApplication.Models
 {
+
     public class FoodOrder
     {
         [Key]
@@ -15,8 +16,14 @@ namespace RestaurantWebApplication.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public int ForderOrderStatusId { get; set; }
+        public int FoodOrderStatusId { get; set; }
         public FoodOrderStatus FoodOrderStatus { get; set; }
 
+        public List<FoodOrderDetail> FoodOrderDetails { get; set; }
+
+        public FoodOrder()
+        {
+            FoodOrderDetails = new List<FoodOrderDetail>();
+        }
     }
 }

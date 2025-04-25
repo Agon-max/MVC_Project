@@ -1,57 +1,89 @@
-﻿@model List<FoodOrder>
+﻿@using System.Collections.Specialized
+@model List<FoodOrder>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Lista e porosive";
 }
 
 <div class="row">
     <div class="col-md-12">
         <div class="text-center">
-            <h5 class="display-4">Menaxhimi i Porosive</h5>
-            <h6>Ketu menaxhohen porosite!</h6>
+            <h6 class="display-6">Menaxhimi i porosive</h6>
+            <p>Këtu menaxhohen porositë e përdorusve online.</p>
         </div>
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-condesed">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Klienti</th>
-                    <th>Numri i telefonit</th>
-                    <th>Email Adresa</th>
+                    <th>Numri telefonit</th>
+                    <th>Email adresa</th>
                     <th>Produktet e porositura</th>
                     <th>Porosia</th>
+                    <th>Statusi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach(var order in Model)
+                @foreach (var order in Model)
                 {
-                    <tr>
-                        <th>
-                            @order.Id
-                        </th>
-                        <th>
-                            @order.FullName
-                        </th>
-                        <th>
-                            @order.phoneNumber
-                        </th>
-                        <th>
-                            @order.EmailAddress
-                        </th>
-                        <th>
-                            @order.
-                        </th>
-                        <th>
-                            @order.TotalPrice.ToString("N2");
-                        </th>
+                    <tr data-id="@order.Id">
+                        <th>@order.Id</th>
+                        <td>@order.FullName</td>
+                        <td>@order.phoneNumber</td>
+                        <td>@order.EmailAddress</td>
+
+                        <td>
+                            @foreach (var product in order.FoodOrderDetails)
+                            {
+                                <span>@product.Food.Name</span>
+                            }
+                        </td>
+
+                        <td>@order.TotalPrice.ToString("N2") €</td>
+
+                        <td width="125">
+                            <select class="form-control" onchange="updateFoodOrderStatus(this);">
+                                @foreach (var foodOrderStatus in (List<FoodOrderStatus>)ViewBag.FoodOrderStatuses)
+                                {
+                                    @Html.Raw("<option " + (order.FoodOrderStatusId == foodOrderStatus.Id ? "selected" : "") + " value=\"" + foodOrderStatus.Id + "\">" + foodOrderStatus.Name + "</option>")
+                                }
+                            </select>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        let updateFoodOrderStatus = function(thisReference){
+            let currentFoodOrderId = thisReference.closest("tr").getAttribute("data-id");
+            let currentFoodOrderStatusId = thisReference.value;
+
+            jQuery.ajax({
+                url: '@Url.Action("UpdateFoodOrderStatus", "Order")?foodOrderId=' + currentFoodOrderId + '&foodOrderStatusId=' + currentFoodOrderStatusId,
+                type: 'POST',
+                data: null,
+                success: function(response) {
+                    if(response.status == true){
+                        thisReference.setAttribute("disabled", true);
+                    } else {
+                        thisReference.removeAttribute("disabled");
+                    }
+
+                    alert(response.message);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        };
+    </script>
+}
