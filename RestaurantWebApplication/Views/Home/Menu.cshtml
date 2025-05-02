@@ -156,7 +156,7 @@
         };
 
         let removeOrderProductsIfNeeded = function(){
-            let currentCartSelector = document.querySelector("ul.navbar-nav li.dropdown ul.dropdown-menu");
+            let currentCartSelector = document.querySelector("ul.navbar-nav li.dropdown ul[cart-items]");
             let currentProductsInCart = currentCartSelector.querySelectorAll("li[data-product]").length;
 
             let thereIsNoProductsInCart = '<li class="d-flex justify-content-start"><a class="dropdown-item" href="#">Momentalisht nuk keni produkte në shportë!</a></li>';
@@ -284,7 +284,7 @@
         jQuery(function(){
             document.querySelectorAll("button[cart-btn]").forEach(function(button){
                 button.addEventListener("click", function(){
-                    let currentCartSelector = document.querySelector("ul.navbar-nav li.dropdown ul.dropdown-menu");
+                    let currentCartSelector = document.querySelector("ul.navbar-nav li.dropdown ul[cart-items]");
 
                     let currentSelector = this;
                     let currentProductId = parseInt(currentSelector.getAttribute("data-food-id"));
